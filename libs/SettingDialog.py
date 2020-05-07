@@ -1,4 +1,7 @@
 from PyQt5 import QtGui, QtCore,QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 import socket
 import re
 
@@ -48,9 +51,9 @@ class SettingDialog(QtWidgets.QDialog):
         self.label_font_size_sl.setRange(5,50)
         self.label_font_size_sp = QtWidgets.QSpinBox()
         self.label_font_size_sp.setRange(5,50)
-        QtCore.QObject.connect(self.label_font_size_sl, QtCore.SIGNAL("valueChanged(int)"),
+        # QObject.connect(self.label_font_size_sl, QtCore.SIGNAL("valueChanged(int)"),
 
-                               self.label_font_size_sp, QtCore.SLOT("setValue(int)"))
+        #                        self.label_font_size_sp, QtCore.SLOT("setValue(int)"))
         self.label_font_size_sl.valueChanged.connect(self.change_label_font_size)
         self.label_font_size_sl.setValue(self.__class__.label_font_size)
         vbox = QtWidgets.QVBoxLayout()

@@ -43,7 +43,7 @@ __appname__ = 'labelImgPlus'
 
 # Utility functions and classes.
 def have_qstring():
-    '''p3/qt5 get rid of QString wrapper as py3 has native unicode str type'''
+    '''p3/qt5 get rid of QString wrapper as py3 has native ustr str type'''
     return not (sys.version_info.major >= 3 or QT_VERSION_STR.startswith('5.'))
 
 
@@ -953,7 +953,7 @@ class MainWindow(QMainWindow, WindowMixin):
         current = self.filename
 
         def exists(filename):
-            return os.path.exists(unicode(filename))
+            return os.path.exists(ustr(filename))
 
         menu = self.menus.recentFiles
         menu.clear()
@@ -1067,7 +1067,7 @@ class MainWindow(QMainWindow, WindowMixin):
             if isinstance(s.fill_color,list):
                 s.fill_color = QColor(s.fill_color[0],s.fill_color[1],s.fill_color[2],s.fill_color[3])
             return dict(
-                label=unicode(
+                label=ustr(
                     s.label),
                 line_color=s.line_color.getRgb() if s.line_color != self.lineColor else None,
                 fill_color=s.fill_color.getRgb() if s.fill_color != self.fillColor else None,
@@ -1101,14 +1101,14 @@ class MainWindow(QMainWindow, WindowMixin):
                     savefilename = self.defaultSaveDir + os.path.splitext(imgFileName)[0] + '.xml'  # the mask image will be save as file_mask.jpg etc.
                     print ('savePascalVocFommat save to:' + savefilename)
                     lf.savePascalVocFormat(
-                        savefilename, self.image_size, shapes, unicode(
+                        savefilename, self.image_size, shapes, ustr(
                             self.filename), shape_type_=self.shape_type)
                     self.process_image_num += 1
                 else:
                     lf.save(
                         filename,
                         shapes,
-                        unicode(
+                        ustr(
                             self.filename),
                         self.imageData,
                         self.lineColor.getRgb(),
@@ -1154,9 +1154,9 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def labelItemChanged(self, item):
         shape = self.itemsToShapes[item]
-        label = unicode(item.text())
+        label = ustr(item.text())
         if label != shape.label:
-            shape.label = unicode(item.text())
+            shape.label = ustr(item.text())
             self.setDirty()
         else:  # User probably changed item visibility
             self.canvas.setShapeVisible(shape, item.checkState() == Qt.Checked)
@@ -1267,7 +1267,11 @@ class MainWindow(QMainWindow, WindowMixin):
         if filename is None:
             if self.app_settings.get(SETTING_FILENAME):
                 filename = self.app_settings[SETTING_FILENAME]
-        filename = unicode(filename)
+        filename = ustr(filename)
+        try:
+            filename = filename[0]
+        except :
+            filename = None
         if filename and self.fileListWidget.count() > 0:
             index = self.mImgList.index(filename)
             fileWidgetItem = self.fileListWidget.item(index)
@@ -1299,12 +1303,12 @@ class MainWindow(QMainWindow, WindowMixin):
                     filename)
                 self.status("Error reading %s" % filename)
                 return False
-            self.status("Loaded %s" % os.path.basename(unicode(filename)))
+            self.status("Loaded %s" % os.path.basename(ustr(filename)))
             self.setWindowTitle(
                 __appname__ +
                 ' ' + self.mode_str[self.task_mode] + ' ' +
                 os.path.basename(
-                    unicode(filename)))
+                    ustr(filename)))
             self.image = image
             self.image_size = []  # image size should be clear
             self.image_size.append(image.height())
@@ -1428,11 +1432,11 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def changeSavedir(self, _value=False):
         if self.defaultSaveDir is not None:
-            path = unicode(self.defaultSaveDir)
+            path = ustr(self.defaultSaveDir)
         else:
             path = '.'
 
-        dirpath = unicode(
+        dirpath = ustr(
             QFileDialog.getExistingDirectory(
                 self,
                 '%s - Save to the directory' %
@@ -1452,14 +1456,14 @@ class MainWindow(QMainWindow, WindowMixin):
         if self.filename is None:
             return
 
-        path = os.path.dirname(unicode(self.filename)) \
+        path = os.path.dirname(ustr(self.filename)) \
             if self.filename else '.'
         if self.usingPascalVocFormat:
-            formats = ['*.%s' % unicode(fmt).lower()
+            formats = ['*.%s' % ustr(fmt).lower()
                        for fmt in QImageReader.supportedImageFormats()]
             filters = "Open Annotation XML file (%s)" % \
                       ' '.join(formats + ['*.xml'])
-            filename = unicode(
+            filename = ustr(
                 QFileDialog.getOpenFileName(
                     self, '%s - Choose a xml file' %
                     __appname__, path, filters))
@@ -1482,13 +1486,13 @@ class MainWindow(QMainWindow, WindowMixin):
         if not self.mayContinue():
             return
 
-        path = os.path.dirname(unicode(self.filename)) \
+        path = os.path.dirname(ustr(self.filename)) \
             if self.filename else '.'
 
         if self.lastOpenDir is not None and len(self.lastOpenDir) > 1:
             path = self.lastOpenDir
 
-        dirpath = unicode(
+        dirpath = ustr(
             QFileDialog.getExistingDirectory(
                 self,
                 '%s - Open Directory' %
@@ -1576,9 +1580,9 @@ class MainWindow(QMainWindow, WindowMixin):
     def openFile(self, _value=False):
         if not self.mayContinue():
             return
-        path = os.path.dirname(unicode(self.filename)) \
+        path = os.path.dirname(ustr(self.filename)) \
             if self.filename else '.'
-        formats = ['*.%s' % unicode(fmt).lower()
+        formats = ['*.%s' % str(fmt).lower()
                    for fmt in QImageReader.supportedImageFormats()]
         if '*.jpg' not in formats:
             formats.append('*.jpg')
@@ -1586,7 +1590,7 @@ class MainWindow(QMainWindow, WindowMixin):
             formats.append('*.jpeg')
         filters = "Image & Label files (%s)" % \
                   ' '.join(formats + ['*%s' % LabelFile.suffix])
-        filename = unicode(
+        filename = ustr(
             QFileDialog.getOpenFileName(
                 self, '%s - Choose Image or Label file' %
                 __appname__, path, filters))
@@ -1680,7 +1684,7 @@ class MainWindow(QMainWindow, WindowMixin):
                                     '<p><b>%s</b></p>%s' % (title, message))
 
     def currentPath(self):
-        return os.path.dirname(unicode(self.filename)
+        return os.path.dirname(ustr(self.filename)
                                ) if self.filename else '.'
 
     def chooseColor1(self):

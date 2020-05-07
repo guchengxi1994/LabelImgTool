@@ -114,7 +114,7 @@ class Canvas(QWidget):
 
     def mouseMoveEvent(self, ev):
         """Update line with last point and current coordinates."""
-        pos = self.transformPos(ev.posF())
+        pos = self.transformPos(ev.pos())
         self.restoreCursor()
         if self.task_mode == 3:
             self.brush_point = pos
@@ -214,7 +214,7 @@ class Canvas(QWidget):
             self.hVertex, self.hShape = None, None
 
     def mousePressEvent(self, ev):
-        pos = self.transformPos(ev.posF())
+        pos = self.transformPos(ev.pos())
         if ev.button() == Qt.LeftButton:
             if self.drawing():
                 if self.shape_type == self.POLYGON_SHAPE and self.current:
@@ -434,7 +434,7 @@ class Canvas(QWidget):
         #print self.brush_point.x(),self.brush_point.y()
         if self.task_mode == 3:
             p.setOpacity(0.3)
-            p.drawImage(0,0,self.mask_pixmap)
+            # p.drawImage(0,0,self.mask_pixmap)
             if self.brush_point:
                 p.drawEllipse(self.brush_point,self.brush_size/2,self.brush_size/2)
             if self.current_brush_path:
