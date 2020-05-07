@@ -1,3 +1,12 @@
+'''
+@lanhuage: python
+@Descripttion: 
+@version: beta
+@Author: xiaoshuyui
+@Date: 2020-05-07 13:37:17
+@LastEditors: xiaoshuyui
+@LastEditTime: 2020-05-07 13:55:36
+'''
 import urllib
 import threading
 import os
@@ -14,7 +23,7 @@ class loadImageThread(threading.Thread):
 
     def run(self):
         for image_url in self.image_list:
-            print self.website + image_url
+            print (self.website + image_url)
             urllib.urlretrieve(
                 self.website + image_url,
                 self.filepath + image_url)
@@ -35,7 +44,7 @@ def loadOnlineImgMul(
         num_per_thread = len(image_list)
     else:
         num_per_thread = len(image_list) / thread_num
-    for i in xrange(thread_num + 1):
+    for i in range(thread_num + 1):
         if (i + 1) * num_per_thread > len(image_list):
             t = loadImageThread(
                 website,

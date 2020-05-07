@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+from __future__ import print_function
 import codecs
 import json
 import logging
@@ -13,8 +14,11 @@ from functools import partial
 
 import qdarkstyle
 import requests
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+# from PyQt4.QtCore import *
+# from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from libs.constants import *
 from libs.ustr import ustr
 
@@ -80,10 +84,10 @@ class MainWindow(QMainWindow, WindowMixin):
         # info display
         self.display_timer = QTimer()
         self.display_timer.start(1000)
-        QObject.connect(
-            self.display_timer,
-            SIGNAL("timeout()"),
-            self.info_display)
+        # QObject.connect(
+        #     self.display_timer,
+        #     SIGNAL("timeout()"),
+        #     self.info_display)
         # label color map
         self.label_font_size = 10
         self.label_color_map = []
@@ -746,7 +750,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 if self.canvas:
                     self.canvas.update()
             self.activeTaskMode(setting_state)
-            print 'change mode to',setting_state
+            print ('change mode to',setting_state)
         settings_dialog.destroy()
 
     def setRemoteUrl(self):
@@ -757,7 +761,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.dowload_thread_num = setRemoteUrldialog.get_thread_num()
             self.server_image_list = setRemoteUrldialog.get_server_image_list()
         setRemoteUrldialog.destroy()
-        print self.database_url
+        print (self.database_url)
         if not os.path.exists(self.loadFilePath):
             os.makedirs(self.loadFilePath)
         if self.database_url:
@@ -860,7 +864,7 @@ class MainWindow(QMainWindow, WindowMixin):
             z.setEnabled(value)
         for action in self.actions.onLoadActive:
             action.setEnabled(value)
-        print 'app mode',self.task_mode
+        print ('app mode',self.task_mode)
         if self.task_mode == 0:
             for action in self.actions.onDETActive:
                 action.setEnabled(value)
@@ -926,7 +930,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.editMode.setEnabled(not drawing)
         if not drawing and self.beginner():
             # Cancel creation.
-            print 'Cancel creation.'
+            print ('Cancel creation.')
             self.canvas.setEditing(True)
             self.canvas.restoreCursor()
             self.actions.createMode.setEnabled(True)
@@ -999,7 +1003,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.edit.setEnabled(selected)
         self.actions.shapeLineColor.setEnabled(selected)
         self.actions.shapeFillColor.setEnabled(selected)
-        print 'shapeSelectionChanged'
+        print ('shapeSelectionChanged')
 
     def addLabel(self, shape):
         item = QListWidgetItem(shape.label)
@@ -1073,12 +1077,12 @@ class MainWindow(QMainWindow, WindowMixin):
                 shape_type=s.shape_type)
 
         shapes = [format_shape(shape) for shape in self.canvas.shapes]
-        print 'shape type', self.shape_type
+        print ('shape type', self.shape_type)
         imgFileName = os.path.basename(self.filename)
         if self.task_mode == 1:#seg mode
             with open(self.defaultSaveDir + 'label_num_dic.json', 'w') as label_num_file:
                 for key in self.label_num_dic:
-                    print type(key)
+                    print (type(key))
                 json.dump(self.label_num_dic, label_num_file)
             # the mask image will be save as file_mask.png etc.
             result_path = self.defaultSaveDir + \
@@ -1095,7 +1099,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 if self.usingPascalVocFormat is True:
                     
                     savefilename = self.defaultSaveDir + os.path.splitext(imgFileName)[0] + '.xml'  # the mask image will be save as file_mask.jpg etc.
-                    print 'savePascalVocFommat save to:' + savefilename
+                    print ('savePascalVocFommat save to:' + savefilename)
                     lf.savePascalVocFormat(
                         savefilename, self.image_size, shapes, unicode(
                             self.filename), shape_type_=self.shape_type)
@@ -1119,7 +1123,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 return False
         elif self.task_mode == 2:#cls mode
             savefilename = self.defaultSaveDir + os.path.splitext(imgFileName)[0] + '.txt' # the mask image will be save as file_mask.jpg etc.
-            print savefilename
+            print (savefilename)
             with codecs.open(savefilename,'w','utf8') as outfile:
                 for item in self.currentItemLabels:
                     outfile.write(item+'\n')
@@ -1419,7 +1423,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     relatviePath = os.path.join(root, file)
                     images.append(os.path.abspath(relatviePath))
         images.sort(key=lambda x: x.lower())
-        print images
+        print (images)
         return images
 
     def changeSavedir(self, _value=False):
@@ -1594,7 +1598,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if self.hasLabels():
             if self.defaultSaveDir is not None and len(
                     str(self.defaultSaveDir)):
-                print 'handle the image:' + self.filename
+                print ('handle the image:' + self.filename)
                 self._saveFile(self.filename)
             else:
                 self._saveFile(self.filename if self.labelFile
@@ -1743,7 +1747,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if os.path.exists(self.label_color_map_path):
             with codecs.open(self.label_color_map_path, 'r', 'utf-8') as f:
                 lines = f.readlines()
-                print 'color map', lines
+                print ('color map', lines)
                 for line in lines:
                     line = line.strip()
                     line = line.split(',')
@@ -1799,14 +1803,14 @@ class MainWindow(QMainWindow, WindowMixin):
         if os.path.exists(predefined_subclasses_path) is True:
             with codecs.open(predefined_subclasses_path, 'r', 'utf8') as f:
                 lines = f.readlines()
-                print lines
+                print (lines)
                 for line in lines:
                     line = line.strip()
                     line = line.split(':')
                     label_list = line[1].strip().split(' ')
                     self.label_sub_dic[line[0]] = label_list
                     self.labelHist = self.labelHist + label_list
-            print self.label_sub_dic
+            print (self.label_sub_dic)
         elif os.path.exists(predefined_classes_path) is True:
             with codecs.open(predefined_classes_path,'r','utf8') as f:
                 for line in f:

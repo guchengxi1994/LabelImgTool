@@ -92,7 +92,7 @@ class PascalVocWriter:
             i = i + 1
         polygon['name'] = name
         polygon['point_num'] = str(len(shape))
-        print 'point num is ', str(len(shape))
+        print ('point num is ', str(len(shape)))
         self.boxlist.append(polygon)
 
     def appendObjects(self, top):
@@ -123,7 +123,7 @@ class PascalVocWriter:
                     point = SubElement(polygon, 'point' + str(i))
                     point.text = str(
                         int(each_object[i][0])) + ',' + str(int(each_object[i][1]))
-                    print i, point.text
+                    # print i, point.text
 
     def save(self, targetFile=None):
         root = self.genXML()
@@ -200,7 +200,7 @@ class PascalVocReader:
                     points.append(point)
                 self.addPolygonShape(label, points)
         else:
-            print 'unsupportable shape type'
+            print ('unsupportable shape type')
 
 
 # tempParseReader = PascalVocReader('test.xml')

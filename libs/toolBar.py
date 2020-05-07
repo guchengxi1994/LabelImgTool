@@ -1,5 +1,15 @@
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+'''
+@lanhuage: python
+@Descripttion: 
+@version: beta
+@Author: xiaoshuyui
+@Date: 2020-05-07 13:37:17
+@LastEditors: xiaoshuyui
+@LastEditTime: 2020-05-07 13:54:38
+'''
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 
 class ToolBar(QToolBar):

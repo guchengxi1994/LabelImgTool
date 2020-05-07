@@ -1,9 +1,10 @@
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 #from PyQt4.QtOpenGL import *
 
-from shape import Shape
-from lib import distance
+from .shape import Shape
+from .lib import distance
 
 CURSOR_DEFAULT = Qt.ArrowCursor
 CURSOR_POINT = Qt.PointingHandCursor
@@ -74,7 +75,7 @@ class Canvas(QWidget):
             self.line.set_shape_type(type)
             return True
         else:
-            print "not support the shape type: " + str(type)
+            print ("not support the shape type: " + str(type))
             return False
 
     def enterEvent(self, ev):
@@ -587,7 +588,7 @@ class Canvas(QWidget):
     def keyPressEvent(self, ev):
         key = ev.key()
         if key == Qt.Key_Escape and self.current:
-            print 'ESC press'
+            print ('ESC press')
             self.current = None
             self.drawingPolygon.emit(False)
             self.update()
@@ -629,7 +630,7 @@ class Canvas(QWidget):
     def loadShapes(self, shapes):
         self.shapes = list(shapes)
         self.shape_type = shapes[0].get_shape_type()
-        print self.shape_type
+        print (self.shape_type)
         self.current = None
         self.repaint()
 

@@ -1,7 +1,17 @@
+'''
+@lanhuage: python
+@Descripttion: 
+@version: beta
+@Author: xiaoshuyui
+@Date: 2020-05-07 13:37:17
+@LastEditors: xiaoshuyui
+@LastEditTime: 2020-05-07 13:51:11
+'''
 from math import sqrt
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 
 def newIcon(icon):
