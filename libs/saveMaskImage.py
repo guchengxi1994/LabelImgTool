@@ -1,4 +1,13 @@
 '''
+@lanhuage: python
+@Descripttion: 
+@version: beta
+@Author: xiaoshuyui
+@Date: 2020-05-07 08:55:29
+@LastEditors: xiaoshuyui
+@LastEditTime: 2020-05-07 10:58:40
+'''
+'''
 this file define a class to save the result of the mask of parse
 the mask will be save as a gray image using different color to represent different
 object
@@ -6,6 +15,7 @@ object
 import numpy as np
 import logging
 from PIL import Image,ImageDraw
+import random
 
 
 class label_mask_writer:
@@ -25,6 +35,9 @@ class label_mask_writer:
         self.shapes = []
 
     def save_mask_image(self, shapes):
+        print("==================>")
+        print(shapes)
+        print("<==================")
         for shape in shapes:
             self.add_mask_label(shape['label'])
             self.add_shape_points(shape['points'])
@@ -47,10 +60,16 @@ class label_mask_writer:
         mask_draw = ImageDraw.Draw(mask_bg)
         if self.labels:
             index = 0
+            print("==================>")
+            print(self.label_num_dict)
+            print("<==================")
             for label in self.labels:
-                color = self.label_num_dict[label]
+                # color = self.label_num_dict[label]
+                # if color == 1:
+                #     color = color * 255
                 vertex = self.shapes[index]
-                mask_draw.polygon(vertex,color)
+                color = random.randint(64,255)
+                mask_draw.polygon(vertex,fill=color)
                 index += 1
         else:
             logging.error('there are no shapes to save !')

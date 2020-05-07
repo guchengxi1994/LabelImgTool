@@ -1,0 +1,32 @@
+<annotation>
+  <folder>screenshot</folder>
+  <filename>bbox_label</filename>
+  <path>bbox_label.jpg</path>
+  <source>
+    <database>Unknown</database>
+  </source>
+  <size>
+    <width>960</width>
+    <height>540</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <shape_type>POLYGON</shape_type>
+  <object>
+    <name>5</name>
+    <pose>Unspecified</pose>
+    <instance_id>0</instance_id>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <polygon>
+      <point0>156,218</point0>
+      <point1>121,254</point1>
+      <point2>105,305</point2>
+      <point3>147,342</point3>
+      <point4>202,348</point4>
+      <point5>224,315</point5>
+      <point6>206,279</point6>
+      <point7>160,249</point7>
+    </polygon>
+  </object>
+</annotation>

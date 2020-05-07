@@ -123,6 +123,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.process_image_num = 0
         self.server_image_list = None
 
+        self.filePath = ""
+
         # cls labels
         self.currentItemLabels = []
         self.selectedLabel = None
@@ -1091,6 +1093,9 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def saveLabels(self, filename):
         lf = LabelFile()
+        if self.defaultSaveDir is None:
+            dir_path = os.path.dirname(os.path.abspath(__file__))
+            self.defaultSaveDir = dir_path
 
         def format_shape(s):
             if isinstance(s.fill_color, list):
@@ -1135,9 +1140,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     # print(os.path.splitext(imgFileName))
                     # print("=================>")
 
-                    if self.defaultSaveDir is None:
-                        dir_path = os.path.dirname(os.path.abspath(__file__))
-                        self.defaultSaveDir = dir_path
+
 
                     savefilename = os.path.join(self.defaultSaveDir, os.path.splitext(imgFileName)[0] + '.xml')  
                     # the mask image will be save as file_mask.jpg etc.
@@ -1226,7 +1229,7 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 self.label_fre_dic[str(text)] = 1
             new_shape = self.canvas.setLastLabel(text)
-            if self.enable_color_map:
+            if self.enable_color_map and self.task_mode == 1:
                 fill_color = self.label_color_map[
                     self.label_num_dic[text]]
                 new_shape.fill_color = QColor(fill_color[0], fill_color[1], fill_color[2], fill_color[3])

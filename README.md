@@ -1,6 +1,30 @@
 # LabelImg
 
-[![Build Status](https://travis-ci.org/lzx1413/labelImgPlus.svg?branch=master)](https://travis-ci.org/lzx1413/labelImgPlus)
+## Modify log
+
+### 2020.5.7
+
+
+
+(1) Fix bugs ,mostly related to PyQt version(in py3 branch) [remoteDialog.py](./libs/remoteDialog.py) , maybe there are others
+
+(2) in [labelImgTool.py](./labelImgTool.py) , class MainWindow add " self.filePath = "" " statement. It is a bug which may lead to  "closeEvent" error.
+
+Todo : 
+
+       (1) mask image color
+
+       (2) change mode more conveniently
+
+       (3) i think "advancedMode" is redundant
+
+       (4) I use labelme (pip install labelme) to do polygons labelling, change XML to Json is a  necessary alternative
+       
+
+
+<!-- [![Build Status](https://travis-ci.org/lzx1413/labelImgPlus.svg?branch=master)](https://travis-ci.org/lzx1413/labelImgPlus) -->
+
+*** 
 
 LabelImg is a graphical image annotation tool.
 
