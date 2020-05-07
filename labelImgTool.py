@@ -13,8 +13,8 @@ from functools import partial
 
 try:
     import qdarkstyle
-except ImportError:
-    pass
+except :
+    print("find no module named 'qdarkstyle'")
 import requests
 
 try:

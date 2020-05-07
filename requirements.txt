@@ -1,0 +1,7 @@
+lxml==4.3.4
+requests==2.22.0
+QDarkStyle==2.8.1
+numpy==1.17.2
+Pillow==7.1.2
+PyQt5==5.14.2
+sip==5.2.0
