@@ -458,6 +458,8 @@ class Canvas(QWidget):
                 if self.mask_pixmap.isNull():
                     self.mask_pixmap = QImage(self.bg_image.size(), QImage.Format_ARGB32)
                     self.mask_pixmap.fill(QColor(255,255,255,0))
+                    
+                    # self.mask_pixmap.fill(Qt.transparent)
                 self.brush.begin(self.bg_image)
 
                 localBrush = QPainter()
