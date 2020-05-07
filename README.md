@@ -1,6 +1,6 @@
 # LabelImg
 
-## Modify log
+## Change log
 
 ### 2020.5.7
 
