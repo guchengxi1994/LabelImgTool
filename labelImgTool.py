@@ -1946,7 +1946,7 @@ def read(filename, default=None):
 def main(argv):
     """Standard boilerplate Qt application code."""
     app = QApplication(argv)
-    #app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))
+    app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))
     app.setApplicationName(__appname__)
     app.setWindowIcon(newIcon("app"))
     win = MainWindow(argv[1] if len(argv) == 2 else None)

@@ -69,6 +69,10 @@ class Canvas(QWidget):
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.WheelFocus)
 
+        self.lastPoint = QPoint()
+        self.endPoint = QPoint()
+
+
     def set_shape_type(self, type):
         if type == 0:
             self.shape_type = self.RECT_SHAPE
@@ -257,6 +261,7 @@ class Canvas(QWidget):
             self.repaint()
 
     def mouseReleaseEvent(self, ev):
+        print(self.task_mode)
         if ev.button() == Qt.RightButton:
             menu = self.menus[bool(self.selectedShapeCopy)]
             self.restoreCursor()
@@ -268,6 +273,14 @@ class Canvas(QWidget):
         elif ev.button() == Qt.LeftButton and self.selectedShape:
             self.overrideCursor(CURSOR_GRAB)
         elif ev.button() == Qt.LeftButton and self.task_mode == 3 and self.current_brush_path:
+            # color = 255
+            # p = self._painter
+            # p.begin(self)
+            # p.setRenderHint(QPainter.Antialiasing)
+            # # print(self.current_brush_path)
+            # p.fillPath(self.current_brush_path, QBrush(QColor(color)))
+            # p.end()
+            self.mask_pixmap.save("./test.jpg","jpg".upper(),100)
             self.current_brush_path = None
 
     def endMove(self, copy=False):
@@ -445,16 +458,29 @@ class Canvas(QWidget):
                 if self.mask_pixmap.isNull():
                     self.mask_pixmap = QImage(self.bg_image.size(), QImage.Format_ARGB32)
                     self.mask_pixmap.fill(QColor(255,255,255,0))
-                self.brush.begin(self.mask_pixmap)
+                self.brush.begin(self.bg_image)
+
+                localBrush = QPainter()
+                localBrush.begin(self.mask_pixmap)
+                # self.brush.begin(self.mask_pixmap)
                 brush_pen = QPen()
                 self.brush.setCompositionMode(QPainter.CompositionMode_Source)
+
+                localBrush.setCompositionMode(QPainter.CompositionMode_Source)
+
                 brush_pen.setColor(self.brush_color)
                 brush_pen.setWidth(self.brush_size)
                 brush_pen.setCapStyle(Qt.RoundCap)
                 brush_pen.setJoinStyle(Qt.RoundJoin)
                 self.brush.setPen(brush_pen)
                 self.brush.drawPath(self.current_brush_path)
+
+                localBrush.setPen(brush_pen)
+                localBrush.drawPath(self.current_brush_path)
+                # print(self.current_brush_path is None)
                 self.brush.end()
+                localBrush.end()
+
         Shape.scale = self.scale
         for shape in self.shapes:
             if shape.fill_color:
