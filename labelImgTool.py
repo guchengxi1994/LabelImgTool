@@ -3,7 +3,7 @@
 import codecs
 import json
 import logging
-import os.path
+import os
 import re
 import subprocess
 import sys
@@ -11,7 +11,10 @@ import time
 from collections import defaultdict
 from functools import partial
 
-import qdarkstyle
+try:
+    import qdarkstyle
+except ImportError:
+    pass
 import requests
 
 try:
@@ -815,7 +818,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if value:
             self.actions.createMode.setEnabled(True)
             self.actions.editMode.setEnabled(False)
-            self.actions.remotemode
+            # self.actions.remotemode
             self.dock.setFeatures(self.dock.features() | self.dockFeatures)
         else:
             self.dock.setFeatures(self.dock.features() ^ self.dockFeatures)
@@ -1123,9 +1126,21 @@ class MainWindow(QMainWindow, WindowMixin):
         if self.task_mode in [0, 1]:  # seg and det mode
             try:
                 if self.usingPascalVocFormat is True:
+                    """
+                    here is a bug
+                    """
+                    # print("<================")
+                    # print(self.defaultSaveDir)
+                    # print(imgFileName)
+                    # print(os.path.splitext(imgFileName))
+                    # print("=================>")
 
-                    savefilename = os.path.join(self.defaultSaveDir, os.path.splitext(imgFileName)[
-                        0] + '.xml')  # the mask image will be save as file_mask.jpg etc.
+                    if self.defaultSaveDir is None:
+                        dir_path = os.path.dirname(os.path.abspath(__file__))
+                        self.defaultSaveDir = dir_path
+
+                    savefilename = os.path.join(self.defaultSaveDir, os.path.splitext(imgFileName)[0] + '.xml')  
+                    # the mask image will be save as file_mask.jpg etc.
                     print('savePascalVocFommat save to:' + savefilename)
                     lf.savePascalVocFormat(
                         savefilename, self.image_size, shapes, self.filename, shape_type_=self.shape_type)
@@ -1304,12 +1319,18 @@ class MainWindow(QMainWindow, WindowMixin):
             if self.app_settings.get(SETTING_FILENAME):
                 filename = self.app_settings[SETTING_FILENAME]
         filename = ustr(filename)
+        try:
+            filename = filename[0]
+        except :
+            filename = None
+        # print(type(filename))
         if filename and self.fileListWidget.count() > 0:
             index = self.mImgList.index(filename)
+            # print(index)
             fileWidgetItem = self.fileListWidget.item(index)
             fileWidgetItem.setSelected(True)
             #self.fileListWidget.setSelected(fileWidgetItem, True)
-        if QFile.exists(filename):
+        if filename and QFile.exists(filename):
             if LabelFile.isLabelFile(filename):
                 try:
                     self.labelFile = LabelFile(filename)
@@ -1666,7 +1687,7 @@ class MainWindow(QMainWindow, WindowMixin):
         dlg = QFileDialog(self, caption, openDialogPath, filters)
         dlg.setDefaultSuffix(LabelFile.suffix[1:])
         dlg.setAcceptMode(QFileDialog.AcceptSave)
-        dlg.setConfirmOverwrite(True)
+        # dlg.setConfirmOverwrite(True)
         filenameWithoutExtension = os.path.splitext(self.filename)[0]
         dlg.selectFile(filenameWithoutExtension)
         dlg.setOption(QFileDialog.DontUseNativeDialog, False)
@@ -1675,6 +1696,7 @@ class MainWindow(QMainWindow, WindowMixin):
         return ''
 
     def _saveFile(self, filename):
+        print(filename)
         if filename and self.saveLabels(filename):
             self.addRecentFile(filename)
             self.setClean()
