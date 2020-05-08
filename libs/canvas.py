@@ -43,7 +43,7 @@ class Canvas(QWidget):
         self.mask_Image = None
         self.brush_color =QColor(255,0,0,255)
         self.brush_size = 10
-        self.brush = QPainter();
+        self.brush = QPainter()
         self.mode = self.EDIT
         self.shapes = []
         self.current = None
