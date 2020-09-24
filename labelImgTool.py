@@ -1134,14 +1134,6 @@ class MainWindow(QMainWindow, WindowMixin):
                     """
                     here is a bug
                     """
-                    # print("<================")
-                    # print(self.defaultSaveDir)
-                    # print(imgFileName)
-                    # print(os.path.splitext(imgFileName))
-                    # print("=================>")
-
-
-
                     savefilename = os.path.join(self.defaultSaveDir, os.path.splitext(imgFileName)[0] + '.xml')  
                     # the mask image will be save as file_mask.jpg etc.
                     print('savePascalVocFommat save to:' + savefilename)
@@ -1160,6 +1152,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     self.labelFile = lf
                     self.filename = filename
                     self.process_image_num += 1
+                    # print('savePascalVocFommat save to:' + savefilename)
                 return True
             except LabelFileError as e:
                 self.errorMessage(u'Error saving label data',
@@ -1167,8 +1160,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 return False
         elif self.task_mode == 2:  # cls mode
             savefilename = os.path.join(self.defaultSaveDir + os.path.splitext(imgFileName)[
-                0] + '.txt')  # the mask image will be save as file_mask.jpg etc.
-            print(savefilename)
+                0] + '.txt')  # the mask image will be save as file_mask.jpg etc.           
             with codecs.open(savefilename, 'w', 'utf8') as outfile:
                 for item in self.currentItemLabels:
                     outfile.write(item + '\n')
@@ -1178,6 +1170,7 @@ class MainWindow(QMainWindow, WindowMixin):
             mask_img = self.canvas.get_mask_image()
             if mask_img:
                 mask_img.save(savefilename)
+                print(savefilename)
 
     def copySelectedShape(self):
         self.addLabel(self.canvas.copySelectedShape())
